@@ -1,0 +1,23 @@
+{
+  "name": "shadowlands",
+  "version": "1.0.0",
+  "description": "Socket io chat service",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Revenant260/ShadowLands.git"
+  },
+  "keywords": [
+    "node",
+    "socketio"
+  ],
+  "author": "Eddie Smith",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/Revenant260/ShadowLands/issues"
+  },
+  "homepage": "https://github.com/Revenant260/ShadowLands#readme"
+}
