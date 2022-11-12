@@ -6,6 +6,7 @@ exports.handle = function(socket = Socket, io) {
     });
 }
 
-exports.uhndl = function(req, res) {
-    res.redirect(`http://localhost:${port}/home${var1}`)
+exports.uhndl = function(req, res, port) {
+    
+    res.redirect(`http://localhost:${port}/home`)
 }
