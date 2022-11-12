@@ -1,0 +1,2 @@
+# ShadowLands
+Public Chat Server
