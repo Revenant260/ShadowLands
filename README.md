@@ -1,6 +1,6 @@
 ## Welcome To the shadowlands
 
-Live Site: [http://shadowlands.io]()
+Live Site: [http://shadowlands.io](https://revenant260.github.io/ShadowLands/)
 
 > So you may be asking, what is this,
 > and do i have a awnser for you
@@ -13,4 +13,6 @@ Live Site: [http://shadowlands.io]()
 * get users started
 * add room feat
 * all the anti-spam
+
+> Also if your seeing this page instead of the site, im prolly working on it.
 
