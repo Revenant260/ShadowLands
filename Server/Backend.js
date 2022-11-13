@@ -7,15 +7,15 @@ var user = {
 }
 
 exports.handle = function(socket = Socket, io) {
+    cells[socket.handshake.address] = user
+    console.log(cells)
     socket.on('chat message', msg => {
         io.emit('chat message', msg);
     });
 }
 
 exports.uhndl = function(req, res, port) {
-    cells[req.ip] = user
-    console.log(cells)
-    res.redirect(`http://127.0.0.1:${port}/home`)
+    return res.redirect(`http://shadow.lands.com:${port}/home`)
 }
 
 
