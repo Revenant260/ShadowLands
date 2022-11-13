@@ -18,3 +18,16 @@ socket.on('chat message', function(msg) {
   messages.appendChild(item);
   window.scrollTo(0, document.body.scrollHeight);
 });
+
+socket.on("strg", (tok, msg) => {
+  strg(tok, msg)
+})
+
+function strg(tok, msg){
+var user = JSON.stringify(msg)
+if (!msg) {
+  localStorage.setItem(tok, user)
+} else {
+  console.log(localStorage.getItem(tok))
+}
+}
