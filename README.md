@@ -1,6 +1,6 @@
 ## Welcome To the shadowlands
 
-Live Site: [http://shadowlands.io](https://revenant260.github.io/ShadowLands/)
+Live Site: [http://shadowlands.io](http://207.255.218.213:3000/home/)
 
 > So you may be asking, what is this,
 > and do i have a awnser for you
