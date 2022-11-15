@@ -33,6 +33,7 @@ socket.on("sends", function(msg) {
     socket.emit("new", user)
   } else {
     socket.emit("reload", user)
+    localStorage.setItem("msgs", msgs)
   }
 })
 

@@ -34,19 +34,24 @@ if (arg === "join") {
     var userr = {
         usern: "GUEST" + Math.floor(Math.random() * 10000),
         room: "ShadowLands",
-        bans: {},
+        bans: {}
     }
     cells[socks] = userr
     var tmp = "user|" + JSON.stringify(userr)
     socket.emit("store", tmp)
-    return bricks(socks, "AutoBot: Welcome " + userr["usern"])
+    return bricks(socks, "AutoBot: Welcome " + userr["usern"] + " #help to get started.")
 }
 if (arg === "msg") {
     if (String(msg).startsWith("#")){
+        if (String(msg).startsWith("#help")) {
+            return bricks(socks, "ShadowLands: So welcome to shadow lands, this is a place of chaos as of now, constant updates ect [#help - got you here | #usern name | #room room name] with these 2 commands you can create a whole world of chance and choice.")
+        }
         if (String(msg).startsWith("#usern")) {
+            if (String(msg).length > 50) return bricks(socks, "AutoBot --> " + cells[socks]['usern'] + " your name is too long")
             var rtn = update(msg, socks, "#usern")
         }
         if (String(msg).startsWith("#room")) {
+            if (String(msg).length > 25) return bricks(socks, "AutoBot --> " + cells[socks]['usern'] + " too big of a room name")
             var rtn = update(msg, socks, "#room")
             socket.leave(rtn["old"])
             socket.join(rtn["new"])
@@ -55,6 +60,7 @@ if (arg === "msg") {
         socket.emit("store", tmp)
         return bricks(socks, rtn["str"])
     } else {
+        if (String(msg).length > 300) return bricks(socks, "AutoBot --> " + cells[socks]['usern'] + " your msg is too big")
         return bricks(socks, msg)
     }
 }
