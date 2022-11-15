@@ -10,6 +10,8 @@ app.get("/", function (req, res) {
 })
 
 io.on('connection', (socket) => {
+  if (new Date - socket.time < 1600) return
+  socket.time = new Date
   socket.emit("sends", "user")
   socket.on("new", msg => {
     var entry = back.handle(socket.handshake.address,"join", undefined, socket)
@@ -24,6 +26,8 @@ io.on('connection', (socket) => {
   })
 
   socket.on('msgs', msg => {
+    if (new Date - socket.time < 1600) return
+    socket.time = new Date
     var user = back.handle(socket.handshake.address, "msg", msg, socket)
     io.to(user["room"]).emit("msg", user["usern"] + ": " + user["str"])
   });
