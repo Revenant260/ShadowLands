@@ -7,13 +7,15 @@ Live Site: [http://shadowlands.io](http://207.255.218.213:3000/home/)
 >> This is a simple **socket io chat server**, im working on it to learn more about **node js** kinda a pass time thing.
 >>> Now all thats **left to ask**, do you wanna **be a tester**, drop by and break the site ill put your name in this thing somewhere, but **only if you help me some what fix the issue**
 
-### Working on atm
-
-* Getting the site running
-* get users started
-* add room feat
-* all the anti-spam
+### Its been shifted to live
 * #help to get started
+* Soon to come
+** Notifs*
+** DM channel mentions
+
+
+###The Big idea behind this chat is that it works most anywhere at any time kinda like a sidbar chat of sorts
+
 
 ## > Some FAQ <
 > "How are the chat logs stored?": Simple, localy to your device, clear the cache on your browser and poof gone. **but so is your userprofile**
