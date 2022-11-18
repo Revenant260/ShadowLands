@@ -53,9 +53,9 @@ if (arg === "msg") {
         }
         if (String(msg).startsWith("#room")) {
             if (String(msg).length > 25) return bricks(socks, "AutoBot --> " + cells[socks]['usern'] + " too big of a room name")
-            var rtn = update(msg, socks, "#room")
-            socket.leave(String(rtn["new"]))
-            socket.join(String(rtn["new"]).trimStart())
+            var rtn = update(String(rtn["new"]).trimStart(), socks, "#room")
+            socket.leave(rtn["new"])
+            socket.join(rtn["new"])
         }
         var tmp = "user|" + JSON.stringify(cells[socks])
         socket.emit("store", tmp)
