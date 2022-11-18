@@ -43,6 +43,7 @@ if (arg === "join") {
 }
 if (arg === "msg") {
     if (String(msg).startsWith("#")){
+        if (msg)
         if (String(msg).startsWith("#help")) {
             return bricks(socks, "ShadowLands: So welcome to shadow lands, this is a place of chaos as of now, constant updates ect [#help - got you here | #usern name | #room room name] with these 2 commands you can create a whole world of chance and choice.")
         }
@@ -53,8 +54,8 @@ if (arg === "msg") {
         if (String(msg).startsWith("#room")) {
             if (String(msg).length > 25) return bricks(socks, "AutoBot --> " + cells[socks]['usern'] + " too big of a room name")
             var rtn = update(msg, socks, "#room")
-            socket.leave(rtn["old"])
-            socket.join(rtn["new"])
+            socket.leave(String(rtn["new"]))
+            socket.join(String(rtn["new"]).trimStart())
         }
         var tmp = "user|" + JSON.stringify(cells[socks])
         socket.emit("store", tmp)
