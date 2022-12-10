@@ -3,7 +3,7 @@ const { argv } = require('process');
 const app = express();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
-const back = require('./Server/backend')
+const back = require('../Server/backend')
 app.use(express.static(__dirname + '/public'));
 app.get("/", function (req, res) {
   res.redirect("http://localhost:3000/home/")
