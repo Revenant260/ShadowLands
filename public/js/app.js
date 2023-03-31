@@ -7,10 +7,18 @@ var socket = io();
       form.addEventListener('submit', function(e) {
         e.preventDefault();
         if (input.value) {
-          socket.emit('chat message', input.value);
+          socket.emit('chat message', input.value + "|" + localStorage.getItem('username'));
           input.value = '';
         }
       });
+
+      socket.on('connect', () => {
+          socket.emit('userData', localStorage.getItem('username'));
+      });
+
+      socket.on('update', (datas) => {
+        localStorage.setItem('username', socket.id)
+      })
 
       socket.on('chat message', function(msg) {
         var item = document.createElement('li');
