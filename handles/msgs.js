@@ -12,7 +12,6 @@ module.exports = function(io) {
     io.on('connection', (socket) => {
 
     socket.on('userData', (datas) => {
-      console.log(datas)
       
       let userp = JSON.stringify({
         usern: socket.id,
@@ -21,13 +20,18 @@ module.exports = function(io) {
 
       socket.leaveAll();
       if (datas) {
+        for (const word of FILTERED_WORDS) {
+          if (datas.includes(word)) {
+            return socket.emit('chat message', `[admin@${JSON.parse(datas).room}]:[Your message contains inappropriate content]`);
+          }
+        }
+        socket.emit('update', datas)
         socket.join(JSON.parse(datas).room)
-          socket.emit('chat message', `[admin@${JSON.parse(datas).room}]:[Welcome back ${JSON.parse(datas).usern}]`)
-          socket.emit('update', datas)
+        socket.emit('chat message', `[admin@${JSON.parse(datas).room}]:[Welcome back ${JSON.parse(datas).usern}]`)
       } else {
       socket.join(JSON.parse(userp).room)
-          io.to(JSON.parse(userp).room).emit('chat message', `[admin@${JSON.parse(userp).room}]:[Welcome ${JSON.parse(userp).usern}]`)
-          socket.emit('update', userp)
+        io.to(JSON.parse(userp).room).emit('chat message', `[admin@${JSON.parse(userp).room}]:[Welcome ${JSON.parse(userp).usern}]`)
+        socket.emit('update', userp)
       }
 
     })

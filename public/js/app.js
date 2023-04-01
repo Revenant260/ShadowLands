@@ -15,7 +15,6 @@ var socket = io();
 
       function cmds(cmd, vars) {
           let userss = JSON.parse(localStorage.getItem('userp'))
-          console.log(cmd, vars)
           switch (cmd) {
             case 'room':
               userss.room = vars
@@ -30,12 +29,19 @@ var socket = io();
         }
 
       socket.on('connect', () => {
-        //const urlParams = new URLSearchParams(window.location.search);
-        //const room = urlParams.get('room');
+        const urlParams = new URLSearchParams(window.location.search);
+        const roomu = urlParams.get('room');
+        if (roomu !== null) {
+          let userss = JSON.parse(localStorage.getItem('userp'))
+          userss.room = roomu
+          socket.emit('userData', JSON.stringify(userss))
+        } else {
           socket.emit('userData', localStorage.getItem('userp'));
+        }
       });
 
       socket.on('update', (datas) => {
+        history.pushState({}, null, `/?room=${JSON.parse(datas).room}`)
         localStorage.setItem('userp', datas)
       })
 
