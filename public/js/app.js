@@ -29,6 +29,7 @@ var socket = io();
         }
 
       socket.on('connect', () => {
+        history.pushState({}, null, `/`)
         const urlParams = new URLSearchParams(window.location.search);
         const roomu = urlParams.get('room');
         if (roomu !== null) {
