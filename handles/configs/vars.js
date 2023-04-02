@@ -5,14 +5,14 @@ const SPAM_TIME_INTERVAL = setup.settings.spamtime;
 const SPAM_MESSAGE_COUNT = setup.settings.spamcount;
 const FILTERED_WORDS = setup.settings.filter;
 
-let messageQueue = []
-let lastMessageTime = Date.now()
-
 module.exports.users = []
-module.exports.userp = function (id, room) {
-    let thip = { "usern": id, "room": room }
+module.exports.userp = function (id, room, uname) {
+    let thip = { "usern": uname, "room": room, "id": id}
     return JSON.stringify(thip)
 }
+
+let messageQueue = []
+let lastMessageTime = Date.now()
 module.exports.spams = function (msgs) {
     let msg = msgs.split("|")[0]
     if (msg.length > MAX_MESSAGE_LENGTH) {
@@ -39,3 +39,18 @@ module.exports.spams = function (msgs) {
     lastMessageTime = currentTime;
     return "good"
 }
+
+module.exports.cmds = function (cmd, vars, user) {
+    switch (cmd) {
+      case 'room':
+        user.room = vars
+        return user
+        break
+      case 'uname':
+        user.usern = vars
+        return user
+        break
+      default:
+        return user
+    }
+  }

@@ -1,9 +1,9 @@
 {
     "settings":{
         "msgl": 200,
-        "msgpersec": 10,
-        "spamtime": 10,
-        "spamcount": 10,
+        "msgpersec": 8,
+        "spamtime": 8,
+        "spamcount": 8,
         "filter": ["nigger", "nigga", "Nigger"]
         
     },

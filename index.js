@@ -13,7 +13,7 @@ app.get(setup.entry, (req, res) => {
   const filePath = path.join(__dirname, 'public', setup.support4);
   res.sendFile(filePath);
 });
-app.get('/index.css', (req, res) => {
+app.get(setup.support, (req, res) => {
   const filePath = path.join(__dirname, 'public', setup.support1);
   res.sendFile(filePath);
 });

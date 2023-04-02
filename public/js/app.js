@@ -6,53 +6,34 @@ var input = document.getElementById('input');
 
 form.addEventListener('submit', function (e) {
   e.preventDefault();
+  var thip = input.value + '|' + localStorage.getItem('userp')
   if (input.value) {
-    socket.emit('chat message', input.value + '|' + localStorage.getItem('userp'));
-    if (input.value.startsWith("@")) cmds(input.value.replace("@", "").split(" ")[0], input.value.replace("@", "").split(" ")[1])
+    socket.emit('chat message', thip);
     input.value = '';
   }
 });
 
-function cmds(cmd, vars) {
-  let userss = JSON.parse(localStorage.getItem('userp'))
-  switch (cmd) {
-    case 'room':
-      userss.room = vars
-      socket.emit("userData", JSON.stringify(userss))
-      break
-    case 'uname':
-      userss.usern = vars
-      socket.emit("userData", JSON.stringify(userss))
-      break
-    case 'active':
-      socket.emit("active", userss)
-      break
-    default:
-      input.value = ''
-  }
-}
 
 socket.on('connect', () => {
-  history.pushState({}, null, `/`)
-  const urlParams = new URLSearchParams(window.location.search);
-  const roomu = urlParams.get('room');
-  if (roomu !== null) {
-    let userss = JSON.parse(localStorage.getItem('userp'))
-    userss.room = roomu
-    socket.emit('userData', JSON.stringify(userss))
+  let userss = JSON.parse(localStorage.getItem('userp'))
+  if (userss === null) {
+  socket.emit('userData', "new")
   } else {
-    socket.emit('userData', localStorage.getItem('userp'));
+    socket.emit('userData', userss)
+    socket.emit('join', userss.room)
   }
 });
 
 socket.on('update', (datas) => {
-  history.pushState({}, null, `/?room=${JSON.parse(datas).room}`)
   localStorage.setItem('userp', datas)
+  socket.emit('join', JSON.parse(datas).room)
 })
 
 socket.on('chat message', function (msg) {
   var item = document.createElement('li');
   item.textContent = msg;
   messages.appendChild(item);
+  var local = JSON.parse(localStorage.getItem('userp')).usern + "|" + JSON.parse(localStorage.getItem('userp')).room + "|" + JSON.parse(localStorage.getItem('userp')).id
+  if (item.textContent.includes("@active")) socket.emit("active", local)
   window.scrollTo(0, document.body.scrollHeight);
 });

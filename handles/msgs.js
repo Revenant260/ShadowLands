@@ -6,35 +6,41 @@ module.exports = function (io) {
   io.on(setup.text.io, (socket) => {
 
     socket.on("active", (rooms) => {
-      const connectedClients = io.sockets.adapter.rooms.get(`${rooms.room}`)
-      const clientsArray = Array.from(connectedClients);
-      const clientsString = clientsArray.join('\n').replace(socket.id, rooms.usern)
-      socket.emit(setup.text.chatp, `[${setup.text.modbot + rooms.usern}]:[${clientsString}]`)
+      var thip = trackrec.spams(setup.text.demo)
+      var bamp = rooms.split("|")
+      if (thip !== setup.text.pass) return socket.emit(setup.text.chatp, `[${setup.text.modbot}${bamp[1]}]-[${thip}]`)
+      socket.emit.emit(setup.text.chatp, `[${bamp[0]} is active]`)
+    })
+
+
+    socket.on("join", (room) => {
+      socket.leaveAll();
+      socket.join(room)
     })
 
     socket.on(setup.text.udata, (datas) => {
-      let userp = trackrec.userp(socket.id, setup.text.demo)
-
-      socket.leaveAll();
-      if (datas) {
-        var thip = trackrec.spams(datas)
-        if (thip !== setup.text.pass) return socket.emit(setup.text.chatp, `[${setup.text.modbot + JSON.parse(datas).usern}]:[${thip}]`)
-        socket.emit(setup.text.updt, datas)
-        socket.join(JSON.parse(datas).room)
-      } else {
-        socket.join(JSON.parse(userp).room)
-        io.to(JSON.parse(userp).room).emit(setup.text.chatp, `[${setup.text.modbot + JSON.parse(userp).room}]:[Welcome ${JSON.parse(userp).usern} ${setup.text.welcome}]`)
-        socket.emit(setup.text.updt, userp)
+      if (datas === "new") {
+        let thip = trackrec.userp(socket.id, setup.text.demo, socket.id)
+        socket.emit(setup.text.updt, thip)
+        socket.join(setup.text.demo)
+        io.to(setup.text.demo).emit(setup.text.chatp, `[${setup.text.modbot}${socket.id}]-[${setup.text.welcome}]`);
       }
-
     })
 
     socket.on(setup.text.chatp, (msg) => {
-      var thip = trackrec.spams(msg)
+      var thip = trackrec.spams(msg.split("|")[0])
+      var thip2 = JSON.parse(msg.split("|")[1])
+      var thi2 = trackrec.userp(thip2.usern, thip2.room, socket.id)
       if (thip === "good") {
-        io.to(JSON.parse(msg.split("|")[1]).room).emit(setup.text.chatp, `[${JSON.parse(msg.split("|")[1]).usern}@${JSON.parse(msg.split("|")[1]).room}]:[${msg.split("|")[0]}]` + `:[${new Date().toLocaleTimeString()}]`);
+        if (msg.split("|")[0].startsWith("@")) {
+          var cmd = msg.split("|")[0].replace("@", "").split(" ")[0]
+          var rte = trackrec.cmds(cmd, msg.split("|")[0].split(" ")[1], thip2)
+          var rte2 = JSON.stringify(rte)
+          socket.emit(setup.text.updt, rte2)
+        }
+        socket.to(thip2.room).emit(setup.text.chatp, `[${thip2.usern}@${thip2.room}]-[${msg.split("|")[0]}]`);
       } else {
-        socket.emit(setup.text.chatp, `[${setup.text.modbot + JSON.parse(msg.split("|")[1]).usern}]:[${thip}]`);
+        socket.emit(setup.text.chatp, `[${setup.text.modbot}${thip2.usern}]-[${thip}]`);
       }
     });
   })
