@@ -3,4 +3,4 @@ Welcome to my very low quality discord clone im working on learning node js and 
 
 https://cdn.discordapp.com/attachments/1043473690211389532/1091883115980537926/image.png
 
-Added @uname "name" | @room "name"
+CMDS: @uname "name" | @room "name" | @url "url" | @active 
