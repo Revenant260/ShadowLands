@@ -1,30 +1,54 @@
-/* Apply these styles to all screen sizes */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* mobile and global style */
 body {
   margin: 0;
-  padding-bottom: 3rem;
   font-family: "Fira Code", monospace;
   background: #000000;
 }
 
-#form {
-  background: #242424;
-  padding: 0.25rem;
+footer {
   position: fixed;
+  display: flex;
+  flex-direction: column;
   bottom: 0;
   left: 0;
-  right: 0;
-  display: flex;
-  height: 3rem;
-  box-sizing: border-box;
+  width: 100%;
+  height: 9rem;
+  color: #fff;
   background: #000000;
+}
+
+#form {
+  padding: 0.5rem 10px;
+  display: flex;
+  width: 100%;
+  height: 10rem;
+  margin-bottom: auto;
+}
+
+#form>button {
+  background: #333;
+  border: none;
+  padding: 0.5rem 1rem;
+  min-width: 120px;
+  border-top-right-radius: 12px;
+  border-bottom-right-radius: 12px;
+  outline: none;
+  color: #fff;
+  font-size: calc(0.75vw + 0.75vh + 0.75vmin);
 }
 
 #input {
   border: none;
-  padding: 0.5rem;
+  padding: 0.5rem 1.5rem;
   flex-grow: 1;
-  border-radius: 2rem;
-  margin: 0.25rem;
+  border-bottom-left-radius: 12px;
+  border-top-left-radius: 12px;
   background: #1c1c1c;
   color: #fff;
   font-size: calc(0.75vw + 0.75vh + 0.75vmin);
@@ -34,34 +58,33 @@ body {
   outline: none;
 }
 
-#form > button {
-  background: #333;
-  border: none;
-  padding: 0.5rem 1rem;
-  margin: 0.25rem;
-  border-radius: 3px;
-  outline: none;
-  color: #fff;
-  font-size: calc(0.75vw + 0.75vh + 0.75vmin);
-}
-
 #messages {
-  list-style-type: none;
   margin: 0;
   padding: 0;
-  background: #000000;
+  list-style-type: none;
+  border-bottom-width: 5rem;
+  border-bottom-style: solid;
+
 }
 
-#messages > li {
-  padding: -0.5rem -1rem;
-  font-size: calc(-0.75vw + -0.75vh + -0.75vmin);
+#messages>li {
+  padding: 0.5rem 1rem;
+  font-size: calc(0.75rem + 0.75rem + 0.75rem);
   color: #fff;
 }
 
-#messages > li:nth-child(odd) {
-  background: #000000;
+#messages>li:nth-child(odd) {
+  background: #000;
 }
 
+#container {
+  padding-bottom: 3rem;
+  height: calc(100vh - 3rem - 5rem);
+  overflow: scroll;
+  /* Make the container scrollable */
+}
+
+/* Style the navigation bar */
 .navbar {
   background-color: #ddd;
   width: 100%;
@@ -71,47 +94,35 @@ body {
   align-items: center;
 }
 
+/* Style the text in the navigation bar */
 .navbar-text {
   font-size: 24px;
   font-weight: bold;
   font-size: calc(0.75vw + 0.75vh + 0.75vmin);
 }
 
-/* Apply these styles for screen sizes greater than or equal to 768px */
-@media screen and (min-width: 768px) {
+.main {
+  position: relative;
+  /* keep the absolute and fixed child inside */
+  width: 100%;
+  height: 100vh;
+  /* 100% viewport height (screen height) */
+}
 
+/* tablet only */
+@media (min-width: 768px) {
+  #form>button {
+    min-width: 60px;
+  }
+}
+
+/* desktop and beyond */
+@media (min-width: 1200px) {
   footer {
-    border: white;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 1rem;
-    background: #242424;
-    color: #fff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    height: 6rem;
   }
 
-  #container {
-    height: calc(100vh - 3rem - 5rem); /* Subtract the height of the navbar and footer */
-    overflow: scroll; /* Make the container scrollable */
-  }
-
-  #messages {
-    margin: 0;
-    padding: 0;
-    list-style-type: none;
-  }
-
-  #messages > li {
-    padding: 0.5rem 1rem;
-    font-size: calc(0.75vw + 0.75vh + 0.75vmin);
-    color: #fff;
-  }
-
-  #messages > li:nth-child(odd) {
-    background: #000;
+  #form {
+    height: 4rem;
   }
 }
