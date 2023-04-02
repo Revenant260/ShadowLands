@@ -33,7 +33,7 @@ socket.on('chat message', function (msg) {
   var item = document.createElement('li');
   item.textContent = msg;
   messages.appendChild(item);
+  messages.lastChild.scrollIntoView({behavior:"smooth"})
   var local = JSON.parse(localStorage.getItem('userp')).usern + "|" + JSON.parse(localStorage.getItem('userp')).room + "|" + JSON.parse(localStorage.getItem('userp')).id
   if (item.textContent.includes("@active")) socket.emit("active", local)
-  window.scrollTo(0, document.body.scrollHeight);
 });
