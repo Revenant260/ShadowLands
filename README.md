@@ -3,11 +3,6 @@ Welcome to my very low quality discord clone im working on learning node js and 
 [Main Chat](http://174.140.88.174:4000/?room=mainchat)
 [derpcity](http://174.140.88.174:4000/?room=derpcity)
 
-
-
-
-
-
-https://revenant260-miniature-umbrella-9jr7v6x6q5g3v9x-3000.preview.app.github.dev/?room=shadowlands
+https://cdn.discordapp.com/attachments/1043473690211389532/1091883115980537926/image.png
 
 Added @uname "name" | @room "name"
