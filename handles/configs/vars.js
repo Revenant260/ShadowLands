@@ -50,6 +50,9 @@ module.exports.cmds = function (cmd, vars, user) {
         user.usern = vars
         return user
         break
+        case 'url':
+            return "!link!" + vars
+        break
       default:
         return user
     }

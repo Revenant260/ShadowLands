@@ -6,10 +6,8 @@ module.exports = function (io) {
   io.on(setup.text.io, (socket) => {
 
     socket.on("active", (rooms) => {
-      var temp = bamp[0]
+
       var bamp = rooms.split("|")
-      if (bamp === "") return socket.emit(setup.text.chatp, `[${setup.text.modbot}${bamp[1]}]-[${thip}]`)
-      if (bamp[0] === temp) return
       io.to(bamp[1]).emit(setup.text.chatp, `[${bamp[0]} is active]`)
     })
 
@@ -35,6 +33,7 @@ module.exports = function (io) {
       var thi2 = trackrec.userp(thip2.usern, thip2.room, socket.id)
       if (thip === "good") {
         if (msg.split("|")[0].startsWith("@")) {
+
           var cmd = msg.split("|")[0].replace("@", "").split(" ")[0]
           var rte = trackrec.cmds(cmd, msg.split("|")[0].split(" ")[1], thip2)
           var rte2 = JSON.stringify(rte)
