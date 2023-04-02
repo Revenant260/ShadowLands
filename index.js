@@ -5,20 +5,20 @@ const io = require('socket.io')(http);
 const path = require('path');
 const port = process.env.PORT || 3000;
 const socks = require('./handles/msgs');
-
+const setup = require('./handles/configs/settings.json').files;
 
 app.use(express.static('public'));
 
-app.get('/', (req, res) => {
-  const filePath = path.join(__dirname, 'public', '/html/index.html');
+app.get(setup.entry, (req, res) => {
+  const filePath = path.join(__dirname, 'public', setup.support4);
   res.sendFile(filePath);
 });
 app.get('/index.css', (req, res) => {
-  const filePath = path.join(__dirname, 'public', '/css/index.css');
+  const filePath = path.join(__dirname, 'public', setup.support1);
   res.sendFile(filePath);
 });
-app.get('/app.js', (req, res) => {
-  const filePath = path.join(__dirname, 'public', '/js/app.js');
+app.get(setup.support2, (req, res) => {
+  const filePath = path.join(__dirname, 'public', setup.support3);
   res.sendFile(filePath);
 });
 

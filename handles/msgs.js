@@ -1,75 +1,41 @@
-const MAX_MESSAGE_LENGTH = 200;
-const MAX_MESSAGES_PER_SECOND = 10;
-const SPAM_TIME_INTERVAL = 10; 
-const SPAM_MESSAGE_COUNT = 10; 
-const FILTERED_WORDS = ['nigger', 'Nigger']; 
+const setup = require('../handles/configs/settings.json');
+var trackrec = require('../handles/configs/vars')
+let ausers = trackrec.users
 
-let messageQueue = [];
-let lastMessageTime = Date.now();
-let ausers = []
+module.exports = function (io) {
+  io.on(setup.text.io, (socket) => {
 
-module.exports = function(io) {
-    io.on('connection', (socket) => {
+    socket.on("active", (rooms) => {
+      const connectedClients = io.sockets.adapter.rooms.get(`${rooms.room}`)
+      const clientsArray = Array.from(connectedClients);
+      const clientsString = clientsArray.join('\n').replace(socket.id, rooms.usern)
+      socket.emit(setup.text.chatp, `[${setup.text.modbot + rooms.usern}]:[${clientsString}]`)
+    })
 
-    socket.on('userData', (datas) => {
-      
-      let userp = JSON.stringify({
-        usern: socket.id,
-        room: "shadowlands",
-      })
+    socket.on(setup.text.udata, (datas) => {
+      let userp = trackrec.userp(socket.id, setup.text.demo)
 
       socket.leaveAll();
       if (datas) {
-        for (const word of FILTERED_WORDS) {
-          if (datas.includes(word)) {
-            return socket.emit('chat message', `[admin@${JSON.parse(datas).room}]:[Your message contains inappropriate content]`);
-          }
-        }
-        socket.emit('update', datas)
+        var thip = trackrec.spams(datas)
+        if (thip !== setup.text.pass) return socket.emit(setup.text.chatp, `[${setup.text.modbot + JSON.parse(datas).usern}]:[${thip}]`)
+        socket.emit(setup.text.updt, datas)
         socket.join(JSON.parse(datas).room)
-        socket.emit('chat message', `[admin@${JSON.parse(datas).room}]:[Welcome back ${JSON.parse(datas).usern}]`)
       } else {
-      socket.join(JSON.parse(userp).room)
-        io.to(JSON.parse(userp).room).emit('chat message', `[admin@${JSON.parse(userp).room}]:[Welcome ${JSON.parse(userp).usern}]`)
-        socket.emit('update', userp)
+        socket.join(JSON.parse(userp).room)
+        io.to(JSON.parse(userp).room).emit(setup.text.chatp, `[${setup.text.modbot + JSON.parse(userp).room}]:[Welcome ${JSON.parse(userp).usern} ${setup.text.welcome}]`)
+        socket.emit(setup.text.updt, userp)
       }
 
     })
 
-    socket.on('chat message', (msg) => {
-        var thip = spams(msg)
-        if (thip === "good") {
-          io.to(JSON.parse(msg.split("|")[1]).room).emit('chat message', `[${JSON.parse(msg.split("|")[1]).usern}@${JSON.parse(msg.split("|")[1]).room}]:[${msg.split("|")[0]}]`);
-        } else {
-          io.to(JSON.parse(msg.split("|")[1]).room).emit('chat message', `[admin@${JSON.parse(msg.split("|")[1]).room}]:[${thip}]`);
-        }
-      });
-    })
+    socket.on(setup.text.chatp, (msg) => {
+      var thip = trackrec.spams(msg)
+      if (thip === "good") {
+        io.to(JSON.parse(msg.split("|")[1]).room).emit(setup.text.chatp, `[${JSON.parse(msg.split("|")[1]).usern}@${JSON.parse(msg.split("|")[1]).room}]:[${msg.split("|")[0]}]` + `:[${new Date().toLocaleTimeString()}]`);
+      } else {
+        socket.emit(setup.text.chatp, `[${setup.text.modbot + JSON.parse(msg.split("|")[1]).usern}]:[${thip}]`);
+      }
+    });
+  })
 };
-
-function spams(msgs) {
-    let msg = msgs.split("|")[0]
-        if (msg.length > MAX_MESSAGE_LENGTH) {
-            return 'Message is too long'
-          }
-      
-          const currentTime = Date.now();
-          const timeDiff = currentTime - lastMessageTime;
-          if (timeDiff < 1000 / MAX_MESSAGES_PER_SECOND) {
-            return 'You are sending messages too quickly'
-          }
-      
-          messageQueue.push(currentTime);
-          messageQueue = messageQueue.filter((time) => currentTime - time < SPAM_TIME_INTERVAL * 1000);
-          if (messageQueue.length >= SPAM_MESSAGE_COUNT) {
-            return 'You are sending too many messages'
-          }
-      
-          for (const word of FILTERED_WORDS) {
-            if (msg.includes(word)) {
-              return 'Your message contains inappropriate content'
-            }
-          }
-          lastMessageTime = currentTime;
-          return "good"
-}
