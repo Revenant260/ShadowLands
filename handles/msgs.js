@@ -1,47 +1,76 @@
 const setup = require('../handles/configs/settings.json');
 var trackrec = require('../handles/configs/vars')
-let ausers = trackrec.users
 
 module.exports = function (io) {
   io.on(setup.text.io, (socket) => {
+    console.log(socket.request.connection.remoteAddress)
 
-    socket.on("active", (rooms) => {
-
-      var bamp = rooms.split("|")
-      io.to(bamp[1]).emit(setup.text.chatp, `[${bamp[0]} is active]`)
-    })
-
-
-    socket.on("join", (room) => {
+    socket.on("rtnuse", (room) => {
+      console.log(room)
       socket.leaveAll();
       socket.join(room)
+      socket.emit("joined", trackrec.getMessagesForRoom(room))
+      var msgs = `[${setup.text.modbot}${room}]-[${setup.text.welcome}]`
+      socket.emit(setup.text.chatp, msgs)
     })
 
-    socket.on(setup.text.udata, (datas) => {
-      if (datas === "new") {
-        let thip = trackrec.userp(socket.id, setup.text.demo, socket.id)
-        socket.emit(setup.text.updt, thip)
-        socket.join(setup.text.demo)
-        io.to(setup.text.demo).emit(setup.text.chatp, `[${setup.text.modbot}${socket.id}]-[${setup.text.welcome}]`);
+    socket.on("cmd", (cmd) => {
+      var cmds = cmd.replace("@", "").split(" ")[0]
+      var use = cmd.replace("@", "").replace(cmds, "").trim()
+      var id = socket.request.connection.remoteAddress
+      var gate = trackrec.spams(use)
+      var thip = trackrec.getuser(id)
+      switch (cmds) {
+        case "usern":
+          thip.usern = use
+          trackrec.userp(id, use, thip.room, thip.ban)
+          break;
+        case "room":
+          thip.room = use
+          socket.leaveAll();
+          socket.join(use)
+          socket.emit("joined", trackrec.getMessagesForRoom(use))
+          trackrec.userp(id, thip.usern, use, thip.ban)
+          var msgs = `[${setup.text.modbot}${use}]-[${setup.text.welcome}]`
+          io.to(use).emit(setup.text.chatp, msgs)
+          break;
+        default:
       }
     })
 
-    socket.on(setup.text.chatp, (msg) => {
-      var thip = trackrec.spams(msg.split("|")[0])
-      if (thip === "") return
-      var thip2 = JSON.parse(msg.split("|")[1])
-      var thi2 = trackrec.userp(thip2.usern, thip2.room, socket.id)
-      if (thip === "good") {
-        if (msg.split("|")[0].startsWith("@")) {
 
-          var cmd = msg.split("|")[0].replace("@", "").split(" ")[0]
-          var rte = trackrec.cmds(cmd, msg.split("|")[0].split(" ")[1], thip2)
-          var rte2 = JSON.stringify(rte)
-          socket.emit(setup.text.updt, rte2)
-        }
-        socket.to(thip2.room).emit(setup.text.chatp, `[${thip2.usern}@${thip2.room}]-[${msg.split("|")[0]}]`);
+    socket.on(setup.text.udata, (datas) => {
+      var id = socket.request.connection.remoteAddress
+      var clear = trackrec.getuser(id)
+      if (clear.ban > 20) {
+        socket.emit("update", trackrec.userp(id, clear.usern, clear.room, clear.ban))
+        return
+      }
+      var thip = trackrec.userp(id, datas, setup.text.demo, 0)
+      socket.leaveAll();
+      socket.join(setup.text.demo)
+      io.to(socket.id).emit("joined", trackrec.getMessagesForRoom(JSON.parse(thip).room))
+      socket.emit("update", thip)
+    })
+
+    socket.on(setup.text.chatp, (msg) => {
+      var id = socket.request.connection.remoteAddress
+      if (msg === "") return
+      var clear = trackrec.getuser(id)
+      if (clear.ban > 20) {
+        trackrec.userp(id, clear.usern, clear.room, clear.ban)
+        return io.to(socket.id).emit(setup.text.chatp, socket.emit(setup.text.chatp, `[${setup.text.modbot}${clear.usern}]-[You are banished, good luck]`))
+      }
+      var gate = trackrec.spams(msg)
+      if (gate === "good") {
+        var msgs = `[${clear.usern}@${clear.room}]-[${msg}]`
+        socket.to(clear.room).emit(setup.text.chatp, msgs);
+        trackrec.addMessageToRoom(clear.room, msgs)
       } else {
-        socket.emit(setup.text.chatp, `[${setup.text.modbot}${thip2.usern}]-[${thip}]`);
+        var thip = trackrec.getuser(id)
+        var ban = thip.ban + 1
+        trackrec.userp(id, thip.usern, thip.room, ban)
+        io.to(thip.room).emit(setup.text.chatp, `[${setup.text.modbot}${clear.usern}]-[${gate}]`);
       }
     });
   })

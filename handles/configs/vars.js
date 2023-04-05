@@ -5,16 +5,43 @@ const SPAM_TIME_INTERVAL = setup.settings.spamtime;
 const SPAM_MESSAGE_COUNT = setup.settings.spamcount;
 const FILTERED_WORDS = setup.settings.filter;
 
-module.exports.users = []
-module.exports.userp = function (id, room, uname) {
-    let thip = { "usern": uname, "room": room, "id": id}
+
+
+const messagesByRoom = {};
+module.exports.addMessageToRoom = function (roomName, message) {
+    if (!messagesByRoom[roomName]) {
+        messagesByRoom[roomName] = [];
+    }
+    messagesByRoom[roomName].push(message);
+}
+
+module.exports.getMessagesForRoom = function (roomName) {
+    if (!messagesByRoom[roomName]) {
+        return [];
+    }
+    return messagesByRoom[roomName];
+}
+const users = {};
+module.exports.userp = function (ip, usern, room, ban) {
+    let thip = { "usern": usern, "room": room, "ban": ban}
+    if (!users[ip]) {
+        users[ip] = []
+    }
+    users[ip] = []
+    users[ip].push(JSON.stringify(thip))
     return JSON.stringify(thip)
+}
+module.exports.getuser = function (ip) {
+    if (!users[ip]) {
+        return [];
+    }
+    console.log(JSON.parse(users[ip][0]))
+    return JSON.parse(users[ip][0])
 }
 
 let messageQueue = []
 let lastMessageTime = Date.now()
-module.exports.spams = function (msgs) {
-    let msg = msgs.split("|")[0]
+module.exports.spams = function (msg) {
     if (msg.length > MAX_MESSAGE_LENGTH) {
         return setup.text.bad1
     }
@@ -39,21 +66,3 @@ module.exports.spams = function (msgs) {
     lastMessageTime = currentTime;
     return "good"
 }
-
-module.exports.cmds = function (cmd, vars, user) {
-    switch (cmd) {
-      case 'room':
-        user.room = vars
-        return user
-        break
-      case 'uname':
-        user.usern = vars
-        return user
-        break
-        case 'url':
-            return "!link!" + vars
-        break
-      default:
-        return user
-    }
-  }

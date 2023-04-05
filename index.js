@@ -8,6 +8,7 @@ const socks = require('./handles/msgs');
 const setup = require('./handles/configs/settings.json').files;
 
 app.use(express.static('public'));
+app.set('trust proxy', true)
 
 app.get(setup.entry, (req, res) => {
   const filePath = path.join(__dirname, 'public', setup.support4);

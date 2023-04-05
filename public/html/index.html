@@ -9,19 +9,30 @@
 
 <body>
   <header>
-    <div class="navbar">
-      <div class="navbar-text">ShadowServer</div>
+    <div class="dropdown">
+      <button class="dropbtn">Live Rooms</button>
+      <div class="dropdown-content">
+        <a href="#?room=shadowlands">ShadowLands</a>
+        <a href="#?room=mainchat">Main Chat</a>
+        <a href="#?room=demonzone">Deep Dark</a>
+      </div>
+    </div>
   </header>
-  <div id="container">
-    <ul id="messages"></ul>
-  </div>
+  <main>
+    <div class="fixit">
+      <ul id="messages" class="message"></ul>
+    </div>
+    <div class="row">
+      <form id="form" class="flexbox">
+        <input id="input" type="text" autocomplete="off" class="input flex" />
+        <button class="button">Send</button>
+      </form>
+    </div>
+  </main>
   <footer>
-    <form id="form" action="">
-      <input id="input" autocomplete="off" /><button>Send</button>
-    </form>
   </footer>
-  <script src="/socket.io/socket.io.js"></script>
-  <script src="/js/app.js"></script>
 </body>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/app.js"></script>
 
 </html>

@@ -1,128 +1,158 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-/* mobile and global style */
 body {
-  margin: 0;
-  font-family: "Fira Code", monospace;
-  background: #000000;
+  background-color: #222222;
+  font-size: 16px;
+  line-height: 1.3;
+  padding: 20px;
 }
 
-footer {
-  position: fixed;
-  display: flex;
-  flex-direction: column;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 9rem;
-  color: #fff;
-  background: #000000;
+.fixit {
+  padding-bottom: 1rem;
 }
 
-#form {
-  padding: 0.5rem 10px;
-  display: flex;
-  width: 100%;
-  height: 10rem;
-  margin-bottom: auto;
-}
-
-#form>button {
-  background: #333;
-  border: none;
-  padding: 0.5rem 1rem;
-  min-width: 120px;
-  border-top-right-radius: 12px;
-  border-bottom-right-radius: 12px;
-  outline: none;
-  color: #fff;
-  font-size: calc(0.75vw + 0.75vh + 0.75vmin);
-}
-
-#input {
-  border: none;
-  padding: 0.5rem 1.5rem;
-  flex-grow: 1;
-  border-bottom-left-radius: 12px;
-  border-top-left-radius: 12px;
-  background: #1c1c1c;
-  color: #fff;
-  font-size: calc(0.75vw + 0.75vh + 0.75vmin);
-}
-
-#input:focus {
-  outline: none;
-}
-
-#messages {
-  margin: 0;
-  padding: 0;
-  list-style-type: none;
-  border-bottom-width: 5rem;
-  border-bottom-style: solid;
-
-}
-
-#messages>li {
-  padding: 0.5rem 1rem;
-  font-size: calc(0.75rem + 0.75rem + 0.75rem);
-  color: #fff;
-}
-
-#messages>li:nth-child(odd) {
-  background: #000;
-}
-
-#container {
-  padding-bottom: 3rem;
-  height: calc(100vh - 3rem - 5rem);
-  overflow: scroll;
-  /* Make the container scrollable */
-}
-
-/* Style the navigation bar */
-.navbar {
-  background-color: #ddd;
-  width: 100%;
-  height: 50px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-/* Style the text in the navigation bar */
-.navbar-text {
-  font-size: 24px;
-  font-weight: bold;
-  font-size: calc(0.75vw + 0.75vh + 0.75vmin);
-}
-
-.main {
+.messages {
+  overflow-y: scroll;
   position: relative;
-  /* keep the absolute and fixed child inside */
+  margin-bottom: 3em;
+  color: #ffffff;
+}
+
+ul {
+  list-style: none;
+  font-size: 2em;
+  padding-left: 0px;
+  padding-right: 0px;
+  border-right-width: 0px;
+  border-right-style: solid;
+  margin-right: 0px;
+}
+
+.row {
+  box-sizing: border-box;
+  max-width: 1000px;
   width: 100%;
-  height: 100vh;
-  /* 100% viewport height (screen height) */
+  margin: 0 auto;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 10px;
+  position: fixed;
+  bottom: 0;
 }
 
-/* tablet only */
-@media (min-width: 768px) {
-  #form>button {
-    min-width: 60px;
+.flexbox {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+
+  -webkit-flex-flow: row wrap;
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  font: 0/0 $font-family; // for IE10-9
+}
+
+.flex {
+  flex: 1;
+}
+
+.input {
+  box-sizing: border-box;
+  display: inline-block;
+  float: left;
+  line-height: normal;
+  margin: 0 10px 0 0;
+  width: 100%;
+  padding: 10px 8px;
+
+  font-size: 16px;
+  font-weight: 20;
+  line-height: 1;
+  background-color: #222222;
+  color: #ffffff;
+  border: none;
+}
+
+.button {
+  box-sizing: border-box;
+  display: inline-block;
+  width: auto;
+  float: left;
+  margin: 0;
+  padding: 5px 8px;
+  border: 0;
+
+  color: #ffffff;
+  background: #ff6600;
+
+  font-size: 16px;
+  line-height: 1;
+  text-decoration: none;
+  font-weight: 700;
+  text-transform: uppercase;
+
+  vertical-align: middle;
+  overflow: hidden;
+
+  &:active {
+    outline: 0;
   }
 }
 
-/* desktop and beyond */
-@media (min-width: 1200px) {
-  footer {
-    height: 6rem;
-  }
+.dropbtn {
+  background-color: #0019f8;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
 
-  #form {
-    height: 4rem;
-  }
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {
+  background-color: #f1f1f1
+}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+/* Change the background color of the dropdown button when the dropdown content is shown */
+.dropdown:hover .dropbtn {
+  background-color: #3e8e41;
+}
+
+li:nth-child(odd) {
+  border-radius: 8px;
+  background-color: #777;
+}
+
+li:nth-child(even) {
+  border-radius: 8px;
+  background-color: #222222;
+  color: #777;
 }
