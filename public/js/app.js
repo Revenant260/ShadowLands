@@ -14,6 +14,7 @@ form.addEventListener('submit', function (e) {
   input.value = '';
 });
 
+
 socket.on('connect', () => {
   var url = new URL(window.location.href);
   var rooms = url.href.replace("/#", "/").split("=")[1]
@@ -23,7 +24,7 @@ socket.on('connect', () => {
     return socket.emit("userData", person)
   }
   socket.emit("userData", JSON.parse(thip).usern);
-  if (rooms !== JSON.parse(thip).room) socket.emit("cmd", `@room ${rooms}`)
+  if (rooms !== JSON.parse(thip).room) history.pushState({}, null, `#?room=${rooms}`)
 })
 
 socket.on('update', (datas) => {
@@ -52,3 +53,38 @@ window.addEventListener('popstate', function (event) {
   var url = new URL(window.location.href);
   socket.emit("cmd", `@room ${url.href.replace("/#", "/").split("=")[1]}`)
 });
+
+
+var types = document.createElement('li');
+socket.on("typing", users => {
+  types.textContent = users + " is typing"
+  types.id = users
+  messages.appendChild(types);
+})
+socket.on("ntyping", users => {
+  document.getElementById(users).innerHTML = "";
+  messages.innerHTML.at(messages.innerHTML.length()) = ""
+
+})
+
+var typing = false;
+var timeout = undefined;
+
+function timeoutFunction() {
+  typing = false;
+  var tmp = JSON.parse(localStorage.getItem("userp")).usern
+  socket.emit("noLongerTypingMessage", tmp, JSON.parse(localStorage.getItem("userp")).room);
+}
+
+function typ() {
+  if (typing == false) {
+    typing = true
+    var tmp = JSON.parse(localStorage.getItem("userp")).usern
+    socket.emit("typingMessage", tmp, JSON.parse(localStorage.getItem("userp")).room);
+    timeout = setTimeout(timeoutFunction, 1300);
+  } else {
+    clearTimeout(timeout);
+    timeout = setTimeout(timeoutFunction, 1300);
+  }
+
+}

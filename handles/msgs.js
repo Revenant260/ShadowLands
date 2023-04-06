@@ -5,6 +5,18 @@ module.exports = function (io) {
   io.on(setup.text.io, (socket) => {
     console.log(socket.request.connection.remoteAddress)
 
+
+    socket.on("typingMessage", (usert) => {
+      var id = socket.request.connection.remoteAddress
+      var clear = trackrec.getuser(id)
+      io.to(clear.room).emit("typing", usert)
+    }) 
+    socket.on("noLongerTypingMessage", (usert) => {
+      var id = socket.request.connection.remoteAddress
+      var clear = trackrec.getuser(id)
+      io.to(clear.room).emit("ntyping", usert)
+    })
+
     socket.on("rtnuse", (room) => {
       console.log(room)
       socket.leaveAll();
@@ -31,7 +43,7 @@ module.exports = function (io) {
           socket.join(use)
           socket.emit("joined", trackrec.getMessagesForRoom(use))
           trackrec.userp(id, thip.usern, use, thip.ban)
-          var msgs = `[${setup.text.modbot}${use}]-[${setup.text.welcome}]`
+          var msgs = `${setup.text.modbot}${use} - ${setup.text.welcome}`
           io.to(use).emit(setup.text.chatp, msgs)
           break;
         default:
@@ -59,18 +71,18 @@ module.exports = function (io) {
       var clear = trackrec.getuser(id)
       if (clear.ban > 20) {
         trackrec.userp(id, clear.usern, clear.room, clear.ban)
-        return io.to(socket.id).emit(setup.text.chatp, socket.emit(setup.text.chatp, `[${setup.text.modbot}${clear.usern}]-[You are banished, good luck]`))
+        return io.to(socket.id).emit(setup.text.chatp, socket.emit(setup.text.chatp, `${setup.text.modbot}${clear.usern} - You are banished, good luck`))
       }
       var gate = trackrec.spams(msg)
       if (gate === "good") {
-        var msgs = `[${clear.usern}@${clear.room}]-[${msg}]`
+        var msgs = `[${clear.usern}]-[${clear.room}] - ${msg} - [${new Date().toLocaleTimeString()}]`
         socket.to(clear.room).emit(setup.text.chatp, msgs);
         trackrec.addMessageToRoom(clear.room, msgs)
       } else {
         var thip = trackrec.getuser(id)
         var ban = thip.ban + 1
         trackrec.userp(id, thip.usern, thip.room, ban)
-        io.to(thip.room).emit(setup.text.chatp, `[${setup.text.modbot}${clear.usern}]-[${gate}]`);
+        io.to(thip.room).emit(setup.text.chatp, `${setup.text.modbot}${clear.usern} - ${gate}`);
       }
     });
   })

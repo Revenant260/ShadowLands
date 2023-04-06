@@ -1,8 +1,8 @@
 {
     "settings": {
         "msgl": 200,
-        "msgpersec": 8,
-        "spamtime": 8,
+        "msgpersec": 20,
+        "spamtime": 10,
         "spamcount": 8,
         "filter": [
             "nigger",
@@ -23,7 +23,7 @@
         "bad2": "You are sending messages too quickly",
         "bad3": "You are sending too many messages",
         "bad4": "Your message contains inappropriate content",
-        "modbot": "admin@",
+        "modbot": "admin-",
         "welcome": "A User had joined! @uname 'name' | @room 'name' "
     },
     "files": {
