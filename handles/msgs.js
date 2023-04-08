@@ -6,24 +6,17 @@ module.exports = function (io) {
     console.log(socket.request.connection.remoteAddress)
 
 
-    socket.on("typingMessage", (usert) => {
+    socket.on("typingMessage", (usert, room) => {
       var id = socket.request.connection.remoteAddress
       var clear = trackrec.getuser(id)
-      io.to(clear.room).emit("typing", usert)
+      if (clear.ban > 20) {
+        trackrec.userp(id, clear.usern, clear.room, clear.ban)
+        return io.to(socket.id).emit(setup.text.chatp, socket.emit(setup.text.chatp, `${setup.text.modbot}${clear.usern} - You are banished, good luck`))
+      }
+      io.to(room).emit("typing", usert)
     }) 
-    socket.on("noLongerTypingMessage", (usert) => {
-      var id = socket.request.connection.remoteAddress
-      var clear = trackrec.getuser(id)
-      io.to(clear.room).emit("ntyping", usert)
-    })
-
-    socket.on("rtnuse", (room) => {
-      console.log(room)
-      socket.leaveAll();
-      socket.join(room)
-      socket.emit("joined", trackrec.getMessagesForRoom(room))
-      var msgs = `[${setup.text.modbot}${room}]-[${setup.text.welcome}]`
-      socket.emit(setup.text.chatp, msgs)
+    socket.on("noLongerTypingMessage", (usert, room) => {
+      io.to(room).emit("ntyping", usert)
     })
 
     socket.on("cmd", (cmd) => {
@@ -75,7 +68,7 @@ module.exports = function (io) {
       }
       var gate = trackrec.spams(msg)
       if (gate === "good") {
-        var msgs = `[${clear.usern}]-[${clear.room}] - ${msg} - [${new Date().toLocaleTimeString()}]`
+        var msgs = `[${clear.usern}@${clear.room}] - ${msg} - [${new Date().toLocaleTimeString()}]`
         socket.to(clear.room).emit(setup.text.chatp, msgs);
         trackrec.addMessageToRoom(clear.room, msgs)
       } else {

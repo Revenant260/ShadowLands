@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
 <html>
 
 <head>
@@ -12,17 +13,17 @@
     <div class="dropdown">
       <button class="dropbtn">Live Rooms</button>
       <div class="dropdown-content">
-        <a href="#?room=shadowlands">ShadowLands</a>
-        <a href="#?room=mainchat">Main Chat</a>
-        <a href="#?room=demonzone">Deep Dark</a>
+        <a href="?room=shadowlands">ShadowLands</a>
+        <a href="?room=mainchat">Main Chat</a>
+        <a href="?room=demonzone">Deep Dark</a>
       </div>
     </div>
   </header>
   <main>
-    <div class="fixit">
-      <ul id="messages" class="message"></ul>
-    </div>
     <div class="row">
+      <ul id="messages" class="message">
+      </ul>
+      <form id="typing" class="type"></form>
       <form id="form" class="flexbox">
         <input id="input" type="text" autocomplete="off" oninput="typ()" class="input flex" />
         <button class="button">Send</button>

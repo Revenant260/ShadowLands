@@ -3,6 +3,7 @@ var socket = io();
 var messages = document.getElementById('messages');
 var form = document.getElementById('form');
 var input = document.getElementById('input');
+var type = document.getElementById("typing")
 
 form.addEventListener('submit', function (e) {
   e.preventDefault();
@@ -16,21 +17,23 @@ form.addEventListener('submit', function (e) {
 
 
 socket.on('connect', () => {
-  var url = new URL(window.location.href);
-  var rooms = url.href.replace("/#", "/").split("=")[1]
   var thip = localStorage.getItem("userp")
   if (!thip) {
     let person = prompt("Please enter your name", "Harry Potter");
     return socket.emit("userData", person)
   }
   socket.emit("userData", JSON.parse(thip).usern);
-  if (rooms !== JSON.parse(thip).room) history.pushState({}, null, `#?room=${rooms}`)
+  if (rooms !== JSON.parse(thip).room) {
+  }
+
+  var searchParams = new URLSearchParams(window.location.search);
+  var rooms = searchParams.get('room');
+  socket.emit("cmd", `@room ${rooms}`)
 })
 
 socket.on('update', (datas) => {
   localStorage.clear()
   localStorage.setItem("userp", datas)
-  socket.emit("rtnuse", JSON.parse(localStorage.getItem("userp")).room)
 })
 
 socket.on('chat message', function (msg) {
@@ -38,6 +41,7 @@ socket.on('chat message', function (msg) {
   item.textContent = msg;
   messages.appendChild(item);
   messages.lastChild.scrollIntoView({ behavior: "smooth" })
+  type.innerHTML = ""
 });
 
 socket.on('joined', (msgs) => {
@@ -50,21 +54,22 @@ socket.on('joined', (msgs) => {
 })
 
 window.addEventListener('popstate', function (event) {
-  var url = new URL(window.location.href);
-  socket.emit("cmd", `@room ${url.href.replace("/#", "/").split("=")[1]}`)
+  var searchParams = new URLSearchParams(window.location.search);
+  var rooms = searchParams.get('room');
+  socket.emit("cmd", `@room ${rooms}`)
 });
-
-
-var types = document.createElement('li');
+;
 socket.on("typing", users => {
+  var types = document.createElement('li')
   types.textContent = users + " is typing"
   types.id = users
-  messages.appendChild(types);
+  if (document.getElementById(users) !== "") return
+  type.appendChild(types);
 })
 socket.on("ntyping", users => {
   document.getElementById(users).innerHTML = "";
-  messages.innerHTML.at(messages.innerHTML.length()) = ""
-
+  type.innerHTML.at(type.innerHTML.length()) = ""
+  type.innerHTML = ""
 })
 
 var typing = false;
@@ -81,10 +86,10 @@ function typ() {
     typing = true
     var tmp = JSON.parse(localStorage.getItem("userp")).usern
     socket.emit("typingMessage", tmp, JSON.parse(localStorage.getItem("userp")).room);
-    timeout = setTimeout(timeoutFunction, 1300);
+    timeout = setTimeout(timeoutFunction, 5000)
   } else {
     clearTimeout(timeout);
-    timeout = setTimeout(timeoutFunction, 1300);
+    timeout = setTimeout(timeoutFunction, 2000)
   }
 
 }

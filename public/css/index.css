@@ -1,61 +1,47 @@
 body {
   background-color: #000000;
-  font-size: 16px;
-  line-height: 1.3;
-  padding: 20px;
-}
-
-.fixit {
-  padding-bottom: 1rem;
+  font-size: 20px;
+  line-height: 1.7em;
+  padding: 1.5em;
+  overflow-y: scroll;
 }
 
 .messages {
-  overflow-y: scroll;
   position: relative;
-  margin-bottom: 3em;
   color: #ffffff;
 }
 
 ul {
   list-style: none;
-  font-size: 2em;
+  font-size: 1em;
   font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
   padding-left: 0px;
-  padding-right: 0px;
-  border-right-width: 0px;
-  border-right-style: solid;
-  margin-right: 0px;
+  padding-bottom: 0px;
+margin-bottom: 0px;
 }
 
 .row {
   box-sizing: border-box;
   max-width: 100%;
   width: 100%;
-  margin: 0 auto;
-  background: rgba(255, 255, 255, 0.2);
   padding: 10px;
   position: fixed;
   bottom: 0;
-  margin-right: 1em;
   left: 0px;
-  margin-left: 0px;
-  display: block;
-  padding-right: 3em;
+  overflow: scroll;
+  top: 0px;
+  margin-top: 100px;
 }
 
 
 .flexbox {
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
   display: flex;
-
   -webkit-flex-flow: row wrap;
-  -webkit-flex-wrap: wrap;
-  -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
   flex-wrap: wrap;
-  font: 0/0 $font-family; // for IE10-9
+  position: fixed;
+bottom: 0;
+width: inherit;
 }
 
 .flex {
@@ -155,8 +141,8 @@ ul {
 
 li:nth-child(odd) {
   border-radius: 8px;
-  background-color: #000000;
-  color: #9881ff;
+  background-color: #9881ff;
+  color: #000000;
 }
 
 li:nth-child(even) {
@@ -165,3 +151,16 @@ li:nth-child(even) {
   color: #9881ff;
 }
 
+.type {
+  display: inline-grid;
+  list-style: none;
+  padding-bottom: 50px;
+  margin-bottom: 5px;
+}
+
+.header {
+  border-bottom-width: 100px;
+border-bottom-style: solid;
+margin-bottom: 100px;
+padding-bottom: 100px;
+}
