@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+<meta property="og:shadowlands" content="public chat server">
+<meta property="og:welcome" content="come join the fun">
 <html>
 
 <head>
@@ -11,26 +13,32 @@
 <body>
   <header>
     <div class="dropdown">
-      <button class="dropbtn">Live Rooms</button>
+      <button class="dropbtn">ShadowLands</button>
       <div class="dropdown-content">
-        <a href="?room=shadowlands">ShadowLands</a>
-        <a href="?room=mainchat">Main Chat</a>
-        <a href="?room=demonzone">Deep Dark</a>
+        <a href="?room=shadowlands">Shadow Lands</a>
+        <a href="?room=goodluck">Spam Testing</a>
+        <a href="?room=demonzone">Demon Zone</a>
       </div>
     </div>
   </header>
   <main>
     <div class="row">
+      <div class="container">
+        <div class="msgs">
       <ul id="messages" class="message">
       </ul>
       <form id="typing" class="type"></form>
+    </div>
+  </div>
+</div>
+  </main>
+  <footer>
+    <div class="row">
       <form id="form" class="flexbox">
         <input id="input" type="text" autocomplete="off" oninput="typ()" class="input flex" />
         <button class="button">Send</button>
       </form>
     </div>
-  </main>
-  <footer>
   </footer>
 </body>
 <script src="/socket.io/socket.io.js"></script>

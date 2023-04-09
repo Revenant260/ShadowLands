@@ -22,8 +22,8 @@ module.exports.getMessagesForRoom = function (roomName) {
     return messagesByRoom[roomName];
 }
 const users = {};
-module.exports.userp = function (ip, usern, room, ban) {
-    let thip = { "usern": usern, "room": room, "ban": ban}
+module.exports.userp = function (ip, usern, room, ban, id) {
+    let thip = { "usern": usern.split("|")[0] + `|` + id, "room": room, "ban": ban}
     if (!users[ip]) {
         users[ip] = []
     }

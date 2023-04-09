@@ -36,13 +36,40 @@ socket.on('update', (datas) => {
   localStorage.setItem("userp", datas)
 })
 
+
+var tmp = Boolean(true)
 socket.on('chat message', function (msg) {
   var item = document.createElement('li');
   item.textContent = msg;
   messages.appendChild(item);
-  messages.lastChild.scrollIntoView({ behavior: "smooth" })
   type.innerHTML = ""
+  scrollToBottom()
+  if (document.hidden) {
+    if (tmp === false) return
+    const notificationTitle = "New message";
+    const notificationOptions = {
+      body: "Click to Open",
+      icon: "/favicon.ico"
+    };
+    Notification.requestPermission().then(function(permission) {
+      if (permission === "granted") {
+        const notification = new Notification(notificationTitle, notificationOptions);
+        tmp = false
+        notification.onclick = function(event) {
+          event.preventDefault();
+          window.focus()
+          tmp = true
+        };
+      }
+    });
+  }
 });
+
+function scrollToBottom() {
+  const container = document.querySelector('.container');
+  const msgs = document.querySelector('.msgs');
+  msgs.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' });
+}
 
 socket.on('joined', (msgs) => {
   messages.innerHTML = ''
@@ -51,6 +78,7 @@ socket.on('joined', (msgs) => {
     item.textContent = a;
     messages.appendChild(item);
   })
+  Notification.requestPermission() 
 })
 
 window.addEventListener('popstate', function (event) {
@@ -61,15 +89,12 @@ window.addEventListener('popstate', function (event) {
 ;
 socket.on("typing", users => {
   var types = document.createElement('li')
-  types.textContent = users + " is typing"
+  types.textContent = users + "...! "
   types.id = users
-  if (document.getElementById(users) !== "") return
   type.appendChild(types);
 })
 socket.on("ntyping", users => {
-  document.getElementById(users).innerHTML = "";
-  type.innerHTML.at(type.innerHTML.length()) = ""
-  type.innerHTML = ""
+  if (document.getElementById(users) !== "") document.getElementById(users).innerHTML = ""
 })
 
 var typing = false;
@@ -77,6 +102,7 @@ var timeout = undefined;
 
 function timeoutFunction() {
   typing = false;
+  type.innerHTML = ""
   var tmp = JSON.parse(localStorage.getItem("userp")).usern
   socket.emit("noLongerTypingMessage", tmp, JSON.parse(localStorage.getItem("userp")).room);
 }
