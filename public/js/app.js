@@ -28,7 +28,7 @@ socket.on('connect', () => {
 
   var searchParams = new URLSearchParams(window.location.search);
   var rooms = searchParams.get('room');
-  socket.emit("cmd", `@room ${rooms}`)
+  socket.emit("cmd", `@room ${JSON.parse(thip).room}`)
 })
 
 socket.on('update', (datas) => {
@@ -68,7 +68,7 @@ socket.on('chat message', function (msg) {
 function scrollToBottom() {
   const container = document.querySelector('.container');
   const msgs = document.querySelector('.msgs');
-  msgs.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' });
+  msgs.scrollIntoView({ behavior: 'smooth', block: "end", inline: 'nearest' });
 }
 
 socket.on('joined', (msgs) => {

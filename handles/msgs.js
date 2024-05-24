@@ -26,6 +26,7 @@ module.exports = function (io) {
       var use = cmd.replace("@", "").replace(cmds, "").trim()
       var id = socket.request.connection.remoteAddress
       var gate = trackrec.spams(use)
+      if (gate != "good") return
       var thip = trackrec.getuser(id)
       var nme = thip.usern.replace("|" + socket.id, "")
       switch (cmds) {
@@ -59,7 +60,7 @@ module.exports = function (io) {
       }
       var thip = trackrec.userp(id, datas, setup.text.demo, 0, socket.id)
       socket.leaveAll();
-      socket.join(setup.text.demo)
+      socket.join(clear.room)
       io.to(socket.id).emit("joined", trackrec.getMessagesForRoom(JSON.parse(thip).room))
       socket.emit("update", thip)
     })
@@ -82,7 +83,7 @@ module.exports = function (io) {
         var thip = trackrec.getuser(id)
         var ban = thip.ban + 1
         trackrec.userp(id, thip.usern, thip.room, ban, socket.id)
-        io.to(thip.room).emit(setup.text.chatp, `[${setup.text.modbot}@${clear.usern}] - ${gate}`);
+        io.to(thip.room).emit(setup.text.chatp, `[${setup.text.modbot}@${nme}] - ${gate}`);
       }
     });
   })

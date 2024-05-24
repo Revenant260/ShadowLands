@@ -7,35 +7,37 @@ const FILTERED_WORDS = setup.settings.filter;
 
 
 
-const messagesByRoom = {};
+const messagesByRoom = setup["rooms"];
 module.exports.addMessageToRoom = function (roomName, message) {
     if (!messagesByRoom[roomName]) {
         messagesByRoom[roomName] = [];
     }
     messagesByRoom[roomName].push(message);
+    saves(message.toString(), setup["files"].support6.toString() + roomName + ".txt")
 }
 
 module.exports.getMessagesForRoom = function (roomName) {
     if (!messagesByRoom[roomName]) {
-        return [];
+        loads(setup["files"].support6.toString() + roomName + ".txt", roomName)
     }
     return messagesByRoom[roomName];
 }
-const users = {};
+const users = setup["users"];
 module.exports.userp = function (ip, usern, room, ban, id) {
+    if (!usern) return usern = "@@Guest@@"
     let thip = { "usern": usern.split("|")[0] + `|` + id, "room": room, "ban": ban}
     if (!users[ip]) {
         users[ip] = []
     }
     users[ip] = []
     users[ip].push(JSON.stringify(thip))
+    saves(JSON.stringify(thip), setup["files"].support5.toString() + thip.usern.split("|")[0] + ip + ".txt")
     return JSON.stringify(thip)
 }
 module.exports.getuser = function (ip) {
     if (!users[ip]) {
         return [];
     }
-    console.log(JSON.parse(users[ip][0]))
     return JSON.parse(users[ip][0])
 }
 
@@ -66,3 +68,28 @@ module.exports.spams = function (msg) {
     lastMessageTime = currentTime;
     return "good"
 }
+
+const fs = require('node:fs/promises');
+
+async function saves(logss, trunk) {
+  try {
+    const content = logss + "\n";
+    await fs.appendFile(trunk, content);
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+async function loads(loggs, trunk) {
+  try {
+    const data = await fs.readFile(loggs, { encoding: 'utf8' });
+        messagesByRoom[trunk] = []
+        data.split("\n").forEach((a) => {
+            messagesByRoom[trunk].push(a)
+        })
+  } catch (err) {
+    await fs.appendFile(loggs, "Start of @" + trunk)
+    console.log(err);
+  }
+}
+
