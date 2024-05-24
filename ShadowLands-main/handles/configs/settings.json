@@ -1,0 +1,41 @@
+{
+    "settings": {
+        "msgl": 200,
+        "msgpersec": 20,
+        "spamtime": 10,
+        "spamcount": 8,
+        "filter": [
+            "nigger",
+            "nigga",
+            "Nigger"
+        ]
+    },
+    "text": {
+        "pass": "good",
+        "demo": "shadowlands",
+        "io": "connection",
+        "chatp": "chat message",
+        "udata": "userData",
+        "updt": "update",
+        "joins": "join",
+        "bad": "Your message contains inappropriate content",
+        "bad1": "Message is too long",
+        "bad2": "You are sending messages too quickly",
+        "bad3": "You are sending too many messages",
+        "bad4": "Your message contains inappropriate content",
+        "modbot": "modbot",
+        "welcome": "A User had joined! @usern 'name' | @room 'name' "
+    },
+    "files": {
+        "entry": "/",
+        "support": "/index.css",
+        "support1": "/css/index.css",
+        "support2": "/app.js",
+        "support3": "/js/app.js",
+        "support4": "/html/index.html",
+        "support5": "./users/",
+        "support6": "./rooms/"
+    },
+    "rooms": {},
+    "users": {}
+}
