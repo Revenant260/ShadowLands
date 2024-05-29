@@ -2,6 +2,6 @@ Welcome to my very low quality discord clone im working on learning node js and 
 
 pro-tip: add to home screen in chrome for a better experience
 
-[ShadowLands](http://207.255.210.24:3000)
+[ShadowLands](http://207.255.210.24:2000/home)
 
 CMDS: @usern "name" | @room "name"
